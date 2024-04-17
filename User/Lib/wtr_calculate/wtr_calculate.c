@@ -1,15 +1,13 @@
 /*
  * @Author: szf
  * @Date: 2023-02-22 12:04:21
- * @LastEditTime: 2023-10-06 14:48:00
- * @LastEditors: Chen Yitong 
+ * @LastEditTime: 2024-04-17 22:45:37
+ * @LastEditors: doge60 3020118317@qq.com
  * @brief 运动学逆解算及PID计算函数
- * @FilePath: \MyChassisTry\UserCode\Lib\Calculate\wtr_calculate.c
+ * @FilePath: \Upper_ParallelArm\User\Lib\wtr_calculate\wtr_calculate.c
  */
 
 #include "wtr_calculate.h"
-#include <math.h>
-#include "Chassis_UserConfig.h"
 
 double moter_speed[4];
 

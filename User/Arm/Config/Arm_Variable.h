@@ -15,6 +15,6 @@
 #include "Arm_commen.h"
 extern ARM_MOVING_STATE ArmState;   // 机械臂运动状态
 extern ARM_MOVING_STATE ArmControl; // 机械臂运动状态控制
-extern MOTOR_COMPONENT MotorComponent;      // 电机控制
+extern JOINT_COMPONENT JointComponent;      // 机械臂关节控制
 
 #endif // __CHASSIS_VARIABLE_H__

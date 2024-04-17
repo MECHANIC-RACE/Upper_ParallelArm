@@ -66,7 +66,7 @@ void Arm_StateMachine_Init()
 {
     ArmControl.xMutex_control = xSemaphoreCreateRecursiveMutex();
     ArmState.xMutex_control   = xSemaphoreCreateRecursiveMutex();
-    MotorComponent.xMutex_motor   = xSemaphoreCreateRecursiveMutex();
+    JointComponent.xMutex_motor   = xSemaphoreCreateRecursiveMutex();
 }
 
 void Arm_SteerinfMotorCorrect(){

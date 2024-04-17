@@ -35,11 +35,11 @@ typedef __IO struct
     
     SemaphoreHandle_t xMutex_control; // 互斥锁
 
-} ARM_MOVING_STATE; // 底盘运动状态
+} ARM_MOVING_STATE; // 机械臂运动状态
 
 typedef __IO struct {
-    DJI_t *hDJI[3];  //改成3个，因为机械臂只用到了三个电机
-    SemaphoreHandle_t xMutex_motor; // 互斥锁
-} MOTOR_COMPONENT;
+    DJI_t *hDJI[3];  //暂时改成3个，因为机械臂只用到了三个电机？~？
+    SemaphoreHandle_t xMutex_joint; // 互斥锁
+} JOINT_COMPONENT;
 
 #endif // __ARM_COMMEN_H__

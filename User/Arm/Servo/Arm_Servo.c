@@ -1,4 +1,16 @@
+/*
+ * @Author: doge60 3020118317@qq.com
+ * @Date: 2024-04-14 15:35:36
+ * @LastEditors: doge60 3020118317@qq.com
+ * @LastEditTime: 2024-04-16 00:03:00
+ * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
+ * @Description: 机械臂伺服
+ * 
+ * Copyright (c) 2024 by doge60 3020118317@qq.com, All Rights Reserved. 
+ */
+
 #include "Arm_Servo.h"
+MOTOR_COMPONENT MotorComponent;
 
 void Arm_Servo_Init()
 {

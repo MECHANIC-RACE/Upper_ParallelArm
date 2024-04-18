@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 14:35:53
+ * @LastEditTime: 2024-04-18 15:12:16
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -45,7 +45,7 @@ void Arm_Servo_Task(void const *argument)
         for (int i = 0; i < 3; i++) { memcpy(&(hDJI_tmp[i]), JointComponent.hDJI[i], sizeof(DJI_t)); }
         vPortExitCritical();
 
-        for (int i = 0; i < 3; i++) { speedServo(motor_velocity[i], &(hDJI_tmp[i])); }
+        for (int i = 0; i < 3; i++) { positionServo(motor_velocity[i], &(hDJI_tmp[i])); }
         CanTransmit_DJI_1234(&hcan_Dji,
                              hDJI_tmp[0].speedPID.output,
                              hDJI_tmp[1].speedPID.output,
@@ -53,7 +53,7 @@ void Arm_Servo_Task(void const *argument)
                              hDJI_tmp[3].speedPID.output);
 
         vPortEnterCritical();
-        for (int i = 0; i < 4; i++) { memcpy(WheelComponent.hDJI[i], &(hDJI_tmp[i]), sizeof(DJI_t)); }
+        for (int i = 0; i < 4; i++) { memcpy(JointComponent.hDJI[i], &(hDJI_tmp[i]), sizeof(DJI_t)); }
         vPortExitCritical();
 
         vTaskDelay(10);

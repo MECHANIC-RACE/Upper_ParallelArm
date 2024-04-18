@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 13:31:15
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-17 20:26:19
+ * @LastEditTime: 2024-04-18 14:58:23
  * @FilePath: \Upper_ParallelArm\User\Arm\Config\Arm_commen.h
  * @Description: 机械臂结构体定义
  * 
@@ -12,7 +12,7 @@
 #ifndef __ARM_COMMEN_H__
 #define __ARM_COMMEN_H__
 
-#include "Chassis_Start.h"
+#include "Arm_Start.h"
 typedef enum {
     Stop       = 1, // 停止
     Run        = 3, // 启动
@@ -24,14 +24,14 @@ typedef __IO struct
     __IO struct {
         double x;
         double y;
-        double w;
-    } velocity; // 速度结构体（？x,y,w分别是啥）
+        double z;
+    } velocity; // 速度结构体（？x,y,z分别是啥）
 
     __IO struct {
         double x;
         double y;
-        double w;
-    } position; // 位置结构体（？x,y,w分别是啥）
+        double z;
+    } position; // 位置结构体（？x,y,z分别是啥）
     
     SemaphoreHandle_t xMutex_control; // 互斥锁
 

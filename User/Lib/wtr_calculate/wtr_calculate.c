@@ -22,12 +22,12 @@ double moter_speed[4];
  * @date:
  * @return {void}
  */
-void CalculateFourMecanumWheels(double *moter_speed, double vx, double vy, double vw)
+void CalculateFourMecanumWheels(double *motor_speed, double vx, double vy, double vw)
 {
-    moter_speed[0] = (vx - vy - vw * rotate_ratio) * wheel_rpm_ratio;
-    moter_speed[1] = (vx + vy - vw * rotate_ratio) * wheel_rpm_ratio;
-    moter_speed[2] = (-vx + vy - vw * rotate_ratio) * wheel_rpm_ratio;
-    moter_speed[3] = (-vx - vy - vw * rotate_ratio) * wheel_rpm_ratio;
+    motor_speed[0] = (vx - vy - vw * rotate_ratio) * wheel_rpm_ratio;
+    motor_speed[1] = (vx + vy - vw * rotate_ratio) * wheel_rpm_ratio;
+    motor_speed[2] = (-vx + vy - vw * rotate_ratio) * wheel_rpm_ratio;
+    motor_speed[3] = (-vx - vy - vw * rotate_ratio) * wheel_rpm_ratio;
 }
 
 

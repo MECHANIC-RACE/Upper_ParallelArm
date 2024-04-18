@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-17 22:27:34
+ * @LastEditTime: 2024-04-18 14:35:53
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -35,10 +35,10 @@ void Arm_Servo_Task(void const *argument)
         xSemaphoreGiveRecursive(ArmControl.xMutex_control);
 
         double motor_velocity[3] = {0};
-        CalculateFourMecanumWheels(motor_velocity,
+        CalculateParallelArm(motor_velocity,
                                    ArmControl_tmp.velocity.x,
                                    ArmControl_tmp.velocity.y,
-                                   ArmControl_tmp.velocity.w);
+                                   ArmControl_tmp.velocity.z);
         DJI_t hDJI_tmp[4];
 
         vPortEnterCritical();
@@ -61,34 +61,34 @@ void Arm_Servo_Task(void const *argument)
 }
 
 /**
- * @brief: 启动底盘伺服线程
+ * @brief: 启动机械臂伺服线程
  * @return {*}
  */
-void Chassis_Servo_TaskStart()
+void Arm_Servo_TaskStart()
 {
-    osThreadDef(Chassis_Servo, Chassis_Servo_Task, osPriorityHigh, 0, 1024);
-    osThreadCreate(osThread(Chassis_Servo), NULL);
+    osThreadNew(Arm_Servo_Task, NULL, NULL);
 }
 
 /**
  * @brief 大疆电机初始化
  * @return {*}
  */
-void Chassis_Servo_DjiMotorInit()
+void Arm_Servo_DjiMotorInit()
 {
     CANFilterInit(&hcan1);
-    WheelComponent.hDJI[0] = &hDJI[0];
-    WheelComponent.hDJI[1] = &hDJI[1];
-    WheelComponent.hDJI[2] = &hDJI[2];
-    WheelComponent.hDJI[3] = &hDJI[3];
-    hDJI[0].motorType      = M3508;
-    hDJI[1].motorType      = M3508;
-    hDJI[2].motorType      = M3508;
-    hDJI[3].motorType      = M3508;
+    JointComponent.hDJI[0] = &hDJI[0];
+    JointComponent.hDJI[1] = &hDJI[1];
+    JointComponent.hDJI[2] = &hDJI[2];
+    
+    hDJI[0].motorType      = M3508; //云台
+    hDJI[1].motorType      = M2006; //下pitch轴
+    hDJI[2].motorType      = M2006; //上pitch轴
+    
     DJI_Init();
 }
+
 /**
- * @brief T型速度规划函数
+ * @brief T型速度规划函数（？不知道在机械臂控制里还有用吗）
  * @param initialAngle 初始角度
  * @param maxAngularVelocity 最大角速度
  * @param AngularAcceleration 角加速度

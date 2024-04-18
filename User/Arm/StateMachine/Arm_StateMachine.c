@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-17 20:03:28
+ * @LastEditTime: 2024-04-18 14:32:17
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -28,14 +28,14 @@ void Arm_StateMachine_Task(void *argument)
                 xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
                 ArmControl.velocity.x = 0;
                 ArmControl.velocity.y = 0;
-                ArmControl.velocity.w = 0;
+                ArmControl.velocity.z = 0;
                 xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
             case Run:
                 xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
                 DeadBandOneDimensional((RemoteCtl_RawData_tmp.ch0 - 1024) * 0.001, &(ArmControl.velocity.x), 0.05);
                 DeadBandOneDimensional((RemoteCtl_RawData_tmp.ch1 - 1024) * 0.001, &(ArmControl.velocity.y), 0.05);
-                DeadBandOneDimensional((RemoteCtl_RawData_tmp.ch2 - 1024) * 0.001, &(ArmControl.velocity.w), 0.05);
+                DeadBandOneDimensional((RemoteCtl_RawData_tmp.ch2 - 1024) * 0.001, &(ArmControl.velocity.z), 0.05);
                 xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
             case Correcting:

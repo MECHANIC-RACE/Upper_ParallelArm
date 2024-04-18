@@ -36,7 +36,7 @@
 #define M_LN2    _M_LN2
 #define M_LN10   2.30258509299404568402
 #define M_PI     3.14159265358979323846
-#define DEC      (M_PI / 180)
+#define DEC      (M_PI / 180) //角度值转弧度制
 
 #ifndef M_PI_2
 #define M_PI_2 1.57079632679489661923

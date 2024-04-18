@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 14:32:17
+ * @LastEditTime: 2024-04-18 15:47:42
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -66,7 +66,7 @@ void Arm_StateMachine_Init()
 {
     ArmControl.xMutex_control = xSemaphoreCreateRecursiveMutex();
     ArmState.xMutex_control   = xSemaphoreCreateRecursiveMutex();
-    JointComponent.xMutex_motor   = xSemaphoreCreateRecursiveMutex();
+    JointComponent.xMutex_joint   = xSemaphoreCreateRecursiveMutex();
 }
 
 void Arm_SteerinfMotorCorrect(){

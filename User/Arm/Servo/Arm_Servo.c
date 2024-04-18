@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 15:12:16
+ * @LastEditTime: 2024-04-18 15:39:12
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -13,19 +13,28 @@
 JOINT_COMPONENT JointComponent;
 
 /**
- * @brief: 伺服初始化
+ * @brief 大疆电机初始化
  * @return {*}
  */
 void Arm_Servo_Init()
 {
-    Arm_Servo_DjiMotorInit();
+    CANFilterInit(&hcan1);
+    JointComponent.hDJI[0] = &hDJI[0];
+    JointComponent.hDJI[1] = &hDJI[1];
+    JointComponent.hDJI[2] = &hDJI[2];
+    
+    hDJI[0].motorType      = M3508; //云台
+    hDJI[1].motorType      = M2006; //下pitch轴
+    hDJI[2].motorType      = M2006; //上pitch轴
+
+    DJI_Init();
 }
 
 /**
  * @brief: 伺服线程
  * @return {*}
  */
-void Arm_Servo_Task(void const *argument)
+void Arm_Servo_Task(void *argument)
 {
 
     osDelay(1000);
@@ -34,7 +43,7 @@ void Arm_Servo_Task(void const *argument)
         ARM_MOVING_STATE ArmControl_tmp = ArmControl;
         xSemaphoreGiveRecursive(ArmControl.xMutex_control);
 
-        double motor_velocity[3] = {0};
+        double motor_velocity[4] = {0};
         CalculateParallelArm(motor_velocity,
                                    ArmControl_tmp.velocity.x,
                                    ArmControl_tmp.velocity.y,
@@ -42,10 +51,11 @@ void Arm_Servo_Task(void const *argument)
         DJI_t hDJI_tmp[4];
 
         vPortEnterCritical();
-        for (int i = 0; i < 3; i++) { memcpy(&(hDJI_tmp[i]), JointComponent.hDJI[i], sizeof(DJI_t)); }
+        for (int i = 0; i < 4; i++) { memcpy(&(hDJI_tmp[i]), JointComponent.hDJI[i], sizeof(DJI_t)); }
+        memcpy(&(hDJI_tmp[3]), JointComponent.hDJI[3], sizeof(DJI_t));
         vPortExitCritical();
 
-        for (int i = 0; i < 3; i++) { positionServo(motor_velocity[i], &(hDJI_tmp[i])); }
+        for (int i = 0; i < 4; i++) { positionServo(motor_velocity[i], &(hDJI_tmp[i])); }
         CanTransmit_DJI_1234(&hcan_Dji,
                              hDJI_tmp[0].speedPID.output,
                              hDJI_tmp[1].speedPID.output,
@@ -67,24 +77,6 @@ void Arm_Servo_Task(void const *argument)
 void Arm_Servo_TaskStart()
 {
     osThreadNew(Arm_Servo_Task, NULL, NULL);
-}
-
-/**
- * @brief 大疆电机初始化
- * @return {*}
- */
-void Arm_Servo_DjiMotorInit()
-{
-    CANFilterInit(&hcan1);
-    JointComponent.hDJI[0] = &hDJI[0];
-    JointComponent.hDJI[1] = &hDJI[1];
-    JointComponent.hDJI[2] = &hDJI[2];
-    
-    hDJI[0].motorType      = M3508; //云台
-    hDJI[1].motorType      = M2006; //下pitch轴
-    hDJI[2].motorType      = M2006; //上pitch轴
-    
-    DJI_Init();
 }
 
 /**

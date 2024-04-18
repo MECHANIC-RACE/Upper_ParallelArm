@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 13:31:15
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 14:58:23
+ * @LastEditTime: 2024-04-18 15:28:13
  * @FilePath: \Upper_ParallelArm\User\Arm\Config\Arm_commen.h
  * @Description: 机械臂结构体定义
  * 
@@ -38,7 +38,7 @@ typedef __IO struct
 } ARM_MOVING_STATE; // 机械臂运动状态
 
 typedef __IO struct {
-    DJI_t *hDJI[3];  //暂时改成3个，因为机械臂只用到了三个电机？~？
+    DJI_t *hDJI[4];  //机械臂只用到了三个电机，但是dji can的初始化似乎必须4个一起做，遂设4个，最后一个空挂着
     SemaphoreHandle_t xMutex_joint; // 互斥锁
 } JOINT_COMPONENT;
 

@@ -33,10 +33,11 @@
 //自己的引用
 #include "Arm_Callback.h"
 #include "Arm_commen.h"
-#include "Arm_UserConfig.h"
+#include "Arm_User_Config.h"
 #include "Arm_RemoteCtl.h"
 #include "Arm_Servo.h"
 #include "Arm_StateMachine.h"
 #include "Arm_Variable.h"
+#include "Arm_Calculate.h"
 #include "string.h"
 #endif

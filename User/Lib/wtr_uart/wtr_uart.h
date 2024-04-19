@@ -19,9 +19,9 @@ typedef struct
     int8_t left;
     int8_t right;
     int16_t wheel;
-} Remote_t;
+} DjiRemote_t;
 void DjiRemoteCtl_Decode();
-extern Remote_t RemoteCtl_RawData;
+extern DjiRemote_t DjiRemoteCtl_RawData;
 extern uint8_t JoyStickReceiveData[18];
 extern double posRef;
 #endif

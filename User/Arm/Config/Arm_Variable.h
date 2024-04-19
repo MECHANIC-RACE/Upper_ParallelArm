@@ -14,6 +14,8 @@
 
 #include "Arm_Start.h"
 #include "Arm_commen.h"
+
+extern uint8_t ReceiveData[4];    //外部传入的目标x,y,z方位数据
 extern ARM_MOVING_STATE ArmState;   // 机械臂运动状态
 extern ARM_MOVING_STATE ArmControl; // 机械臂运动状态控制
 extern JOINT_COMPONENT JointComponent;      // 机械臂关节控制

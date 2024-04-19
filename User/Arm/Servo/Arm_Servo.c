@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 15:39:12
+ * @LastEditTime: 2024-04-19 22:38:45
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -16,6 +16,7 @@ JOINT_COMPONENT JointComponent;
  * @brief 大疆电机初始化
  * @return {*}
  */
+
 void Arm_Servo_Init()
 {
     CANFilterInit(&hcan1);
@@ -43,11 +44,11 @@ void Arm_Servo_Task(void *argument)
         ARM_MOVING_STATE ArmControl_tmp = ArmControl;
         xSemaphoreGiveRecursive(ArmControl.xMutex_control);
 
-        double motor_velocity[4] = {0};
-        CalculateParallelArm(motor_velocity,
-                                   ArmControl_tmp.velocity.x,
-                                   ArmControl_tmp.velocity.y,
-                                   ArmControl_tmp.velocity.z);
+        double motor_position[4] = {0};
+        CalculateParallelArm(motor_position,
+                                   ArmControl_tmp.position.x,
+                                   ArmControl_tmp.position.y,
+                                   ArmControl_tmp.position.z);
         DJI_t hDJI_tmp[4];
 
         vPortEnterCritical();
@@ -55,7 +56,7 @@ void Arm_Servo_Task(void *argument)
         memcpy(&(hDJI_tmp[3]), JointComponent.hDJI[3], sizeof(DJI_t));
         vPortExitCritical();
 
-        for (int i = 0; i < 4; i++) { positionServo(motor_velocity[i], &(hDJI_tmp[i])); }
+        for (int i = 0; i < 4; i++) { positionServo(motor_position[i], &(hDJI_tmp[i])); }
         CanTransmit_DJI_1234(&hcan_Dji,
                              hDJI_tmp[0].speedPID.output,
                              hDJI_tmp[1].speedPID.output,
@@ -76,7 +77,13 @@ void Arm_Servo_Task(void *argument)
  */
 void Arm_Servo_TaskStart()
 {
-    osThreadNew(Arm_Servo_Task, NULL, NULL);
+    osThreadId_t Arm_Servo_TaskHandle;
+    const osThreadAttr_t Arm_Servo_Task_attributes = {
+    .name = "Arm_Servo_Task",
+    .stack_size = 1280 * 4,
+    .priority = (osPriority_t) osPriorityAboveNormal,
+    };
+    Arm_Servo_TaskHandle = osThreadNew(Arm_Servo_Task, NULL, &Arm_Servo_Task_attributes);
 }
 
 /**

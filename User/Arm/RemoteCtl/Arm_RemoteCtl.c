@@ -2,7 +2,7 @@
  * @Author: Chen Yitong
  * @Date: 2023-09-23 13:47:29
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 16:08:57
+ * @LastEditTime: 2024-04-19 16:29:34
  * @FilePath: \Upper_ParallelArm\User\Arm\RemoteCtl\Arm_RemoteCtl.c
  * @Brief: 机械臂遥控代码
  *
@@ -22,11 +22,16 @@ Remote_t RemoteCtl_RawData;
 void Arm_RemoteCtl_Init()
 {
     HAL_UART_Receive_DMA(&huart_RemoteCtl, ReceiveData, 4);
+    HAL_UART_Transmit(&huart_RemoteCtl, ReceiveData, 4, 1000);
     __HAL_UART_ENABLE_IT(&huart_RemoteCtl, UART_IT_IDLE); // IDLE 中断使能
 }
 
 void RemoteCtl_Decode()
 {
+    //RemoteCtl_RawData.x = 40;
+    //RemoteCtl_RawData.y = 60;
+    //RemoteCtl_RawData.z = 50;
+    //RemoteCtl_RawData.choice = 3;
     RemoteCtl_RawData.x = ReceiveData[0];
     RemoteCtl_RawData.y = ReceiveData[1];
     RemoteCtl_RawData.z = ReceiveData[2];

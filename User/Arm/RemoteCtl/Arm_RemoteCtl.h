@@ -28,5 +28,6 @@ extern uint8_t ReceiveData[4];  //外部传入的目标x,y,z，case方位数据
 extern Remote_t RemoteCtl_RawData;
 
 void Arm_RemoteCtl_Init();
+void RemoteCtl_Decode();
 
 #endif // __ARM_REMOTECTL_H__

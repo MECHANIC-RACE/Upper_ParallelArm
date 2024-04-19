@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 16:10:07
+ * @LastEditTime: 2024-04-19 20:43:20
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -19,6 +19,7 @@ ARM_MOVING_STATE ArmState;
  */
 void Arm_StateMachine_Task(void *argument)
 {
+    osDelay(1000);
     for (;;) {
         vPortEnterCritical();  //进入临界段（大概是因为遥控通信过程是不可打断的，所以将其放在一个临界段里）
         Remote_t RemoteCtl_RawData_tmp = RemoteCtl_RawData;  //
@@ -54,7 +55,13 @@ void Arm_StateMachine_Task(void *argument)
  */
 void Arm_StateMachine_TaskStart()
 {
-    osThreadNew(Arm_StateMachine_Task, NULL, NULL);  //cmsis v2线程启动似乎只需要这个函数，待测试
+    osThreadId_t Arm_StateMachine_TaskHandle;
+    const osThreadAttr_t Arm_StateMachine_Task_attributes = {
+    .name = "Arm_StateMachine_Task",
+    .stack_size = 1280 * 4,
+    .priority = (osPriority_t) osPriorityAboveNormal,
+    };
+    Arm_StateMachine_TaskHandle = osThreadNew(Arm_StateMachine_Task, NULL, &Arm_StateMachine_Task_attributes);  //cmsis v2线程启动似乎只需要这个函数，待测试
 }
 
 /**

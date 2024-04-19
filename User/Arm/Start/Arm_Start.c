@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-15 23:10:34
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-17 20:28:23
+ * @LastEditTime: 2024-04-19 19:29:14
  * @FilePath: \Upper_ParallelArm\User\Arm\Start\Arm_Start.c
  * @Description: 机械臂启动文件
  * 
@@ -18,7 +18,7 @@
 void StartDefaultTask(void *argument)
 {
     //================初始化====================
-    //Arm_RemoteCtl_Init();    // 遥控初始化
+    Arm_RemoteCtl_Init();    // 遥控初始化
     Arm_StateMachine_Init(); // 状态机初始化
     Arm_Servo_Init();        // 机械臂电机初始化
     //================启动线程==================
@@ -27,6 +27,7 @@ void StartDefaultTask(void *argument)
 
     for (;;)
     {
-        
+        HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
+        osDelay(100);
     }
 }

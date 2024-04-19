@@ -2,7 +2,7 @@
  * @Author: Chen Yitong
  * @Date: 2023-09-23 14:13:20
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-18 14:54:42
+ * @LastEditTime: 2024-04-19 19:07:06
  * @FilePath: \Upper_ParallelArm\User\Arm\Callback\Arm_Callback.c
  * @Brief: 机械臂用中断回调函数
  *
@@ -20,6 +20,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == huart_RemoteCtl.Instance)
     {
-        DjiRemoteCtl_Decode(); // 大疆遥控器解码
+        RemoteCtl_Decode(); // 大疆遥控器解码
     }
 }

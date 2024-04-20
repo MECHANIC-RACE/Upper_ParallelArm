@@ -19,8 +19,8 @@
 
 //FreeRTOS相关
 #include "FreeRTOS.h"
-#include "task.h"
 #include "semphr.h" //使用v2需要加上这个互斥锁头文件，或者直接调用v2包装好的加互斥锁函数
+#include "task.h"
 #include "cmsis_os.h"  //先不删它以提高容错，指不定哪个地方的v1代码没有改干净捏（）
 #include "cmsis_os2.h" //学长用的是cmsis v1，所以这里原先引用的只有"cmsis_os.h"，但是我们需要迁移至v2，遂按官网说明将"cmsis_os2.h"加上
 

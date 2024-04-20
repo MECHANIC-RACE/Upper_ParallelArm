@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 20:43:20
+ * @LastEditTime: 2024-04-19 23:26:00
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -59,7 +59,7 @@ void Arm_StateMachine_TaskStart()
     const osThreadAttr_t Arm_StateMachine_Task_attributes = {
     .name = "Arm_StateMachine_Task",
     .stack_size = 1280 * 4,
-    .priority = (osPriority_t) osPriorityAboveNormal,
+    .priority = (osPriority_t) osPriorityHigh,
     };
     Arm_StateMachine_TaskHandle = osThreadNew(Arm_StateMachine_Task, NULL, &Arm_StateMachine_Task_attributes);  //cmsis v2线程启动似乎只需要这个函数，待测试
 }

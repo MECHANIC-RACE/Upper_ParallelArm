@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 22:38:45
+ * @LastEditTime: 2024-04-19 23:13:04
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -53,7 +53,7 @@ void Arm_Servo_Task(void *argument)
 
         vPortEnterCritical();
         for (int i = 0; i < 4; i++) { memcpy(&(hDJI_tmp[i]), JointComponent.hDJI[i], sizeof(DJI_t)); }
-        memcpy(&(hDJI_tmp[3]), JointComponent.hDJI[3], sizeof(DJI_t));
+        // memcpy(&(hDJI_tmp[3]), JointComponent.hDJI[3], sizeof(DJI_t));
         vPortExitCritical();
 
         for (int i = 0; i < 4; i++) { positionServo(motor_position[i], &(hDJI_tmp[i])); }
@@ -81,7 +81,7 @@ void Arm_Servo_TaskStart()
     const osThreadAttr_t Arm_Servo_Task_attributes = {
     .name = "Arm_Servo_Task",
     .stack_size = 1280 * 4,
-    .priority = (osPriority_t) osPriorityAboveNormal,
+    .priority = (osPriority_t) osPriorityHigh,
     };
     Arm_Servo_TaskHandle = osThreadNew(Arm_Servo_Task, NULL, &Arm_Servo_Task_attributes);
 }

@@ -17,5 +17,8 @@
 
 #define huart_RemoteCtl huart8  //其实不是用遥控，只是借用遥控端口，往工程里传目标相对于机械臂基坐标的x,y,z值
 #define hcan_Dji        hcan1
+#define JointComponent_X JointComponent.hDJI[0]
+#define JointComponent_Y JointComponent.hDJI[1]
+#define JointComponent_Z JointComponent.hDJI[2]
 
 #endif // __ARM_USER_CONFIG_H__

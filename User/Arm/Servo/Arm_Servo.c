@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 23:13:04
+ * @LastEditTime: 2024-04-29 16:34:08
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -24,9 +24,9 @@ void Arm_Servo_Init()
     JointComponent.hDJI[1] = &hDJI[1];
     JointComponent.hDJI[2] = &hDJI[2];
     
-    hDJI[0].motorType      = M3508; //云台
-    hDJI[1].motorType      = M2006; //下pitch轴
-    hDJI[2].motorType      = M2006; //上pitch轴
+    hDJI[0].motorType      = M2006; //云台
+    hDJI[1].motorType      = M3508; //下pitch轴
+    hDJI[2].motorType      = M3508; //上pitch轴
 
     DJI_Init();
 }
@@ -67,7 +67,7 @@ void Arm_Servo_Task(void *argument)
         for (int i = 0; i < 4; i++) { memcpy(JointComponent.hDJI[i], &(hDJI_tmp[i]), sizeof(DJI_t)); }
         vPortExitCritical();
 
-        vTaskDelay(10);
+        vTaskDelay(2);
     }
 }
 

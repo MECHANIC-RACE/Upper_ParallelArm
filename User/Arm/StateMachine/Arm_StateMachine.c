@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 23:26:00
+ * @LastEditTime: 2024-04-29 16:32:51
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -45,7 +45,7 @@ void Arm_StateMachine_Task(void *argument)
             default:
                 break;
         }
-        vTaskDelay(10);
+        vTaskDelay(2);
     }
 }
 

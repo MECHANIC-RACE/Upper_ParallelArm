@@ -20,6 +20,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == huart_RemoteCtl.Instance)
     {
-        RemoteCtl_Decode(); // 大疆遥控器解码
+        // __HAL_UART_ENABLE_IT(&huart_RemoteCtl, UART_IT_IDLE); // IDLE 中断使能
+        RemoteCtl_Decode(); // 遥控解码
+        HAL_UART_Receive_IT(&huart_RemoteCtl, (uint8_t*)ReceiveData, 15);
     }
 }

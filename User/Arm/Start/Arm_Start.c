@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-15 23:10:34
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-19 23:40:37
+ * @LastEditTime: 2024-04-29 17:12:12
  * @FilePath: \Upper_ParallelArm\User\Arm\Start\Arm_Start.c
  * @Description: 机械臂启动文件
  *
@@ -27,6 +27,10 @@ void StartDefaultTask(void *argument)
 
     for (;;) {
         HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_14);
-        osDelay(1000);
+        // osDelay(2);
+        // HAL_UART_Transmit(&huart_RemoteCtl,"HelloWorld\r\n", strlen("HelloWorld\r\n"), 0xFFFF);  //调试串口用
+        // printf("HelloWorld\r\n");  //调试串口重定向用
+        // HAL_UART_Transmit(&huart_RemoteCtl, ReceiveData_tmp, 4, 0xFFFF);  //调试串口数据收发用
+        printf("%f,%f,%f,%d\n" , RemoteCtl_RawData.x,RemoteCtl_RawData.y,RemoteCtl_RawData.z,RemoteCtl_RawData.choice);
     }
 }

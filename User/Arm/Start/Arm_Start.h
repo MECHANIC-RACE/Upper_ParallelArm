@@ -29,6 +29,7 @@
 #include "wtr_can.h"
 #include "wtr_dji.h"
 #include "wtr_uart.h"
+#include "io_retargetToUart.h"
 
 //自己的引用
 #include "Arm_Callback.h"
@@ -39,5 +40,10 @@
 #include "Arm_StateMachine.h"
 #include "Arm_Variable.h"
 #include "Arm_Calculate.h"
+
+//c语言自带库的额外引用
 #include "string.h"
+#include "stdio.h"
+#include "stdlib.h"
+
 #endif

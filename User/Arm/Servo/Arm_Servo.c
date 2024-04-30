@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 17:07:12
+ * @LastEditTime: 2024-04-30 19:39:25
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -29,17 +29,17 @@ void Arm_Servo_Init()
     hDJI[2].motorType      = M3508; //上pitch轴
 
     DJI_Init();
-    // for (int i = 0; i < 8; i++) {
-    //     hDJI[i].speedPID.KP        = 2.0;
-    //     hDJI[i].speedPID.KI        = 0.0;
-    //     hDJI[i].speedPID.KD        = 0.0;
-    //     hDJI[i].speedPID.outputMax = 8000;
+    for (int i = 0; i < 8; i++) {
+        hDJI[i].speedPID.KP        = 2.0;
+        hDJI[i].speedPID.KI        = 0.0;
+        hDJI[i].speedPID.KD        = 0.0;
+        hDJI[i].speedPID.outputMax = 8000;
 
-    //     hDJI[i].posPID.KP        = 80.0f;
-    //     hDJI[i].posPID.KI        = 0.0f;
-    //     hDJI[i].posPID.KD        = 0.0f;
-    //     hDJI[i].posPID.outputMax = 5000;
-    // }
+        hDJI[i].posPID.KP        = 80.0f;
+        hDJI[i].posPID.KI        = 0.0f;
+        hDJI[i].posPID.KD        = 0.0f;
+        hDJI[i].posPID.outputMax = 5000;
+    }
 }
 
 /**
@@ -59,7 +59,7 @@ void Arm_Servo_Task(void *argument)
         vPortExitCritical();
 
         for (int i = 0; i < 4; i++) { positionServo(current_angle[i], &(hDJI_tmp[i])); }
-        // for (int i = 0; i < 4; i++) { positionServo(720, &(hDJI_tmp[i])); } // 调试用数据
+        // for (int i = 0; i < 4; i++) { positionServo(150, &(hDJI_tmp[i])); } // 调试用数据
         CanTransmit_DJI_1234(&hcan_Dji,
                              hDJI_tmp[0].speedPID.output,
                              hDJI_tmp[1].speedPID.output,

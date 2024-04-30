@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-29 22:29:47
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 16:10:44
+ * @LastEditTime: 2024-04-30 20:32:32
  * @FilePath: \Upper_ParallelArm\User\Arm\VelocityPlanning\Arm_VelocityPlanning.c
  * @Description: 梯形速度规划代码
  * 
@@ -30,21 +30,31 @@ void Arm_VelocityPlanning_Task(void *argument)
         ARM_MOVING_STATE ArmControl_tmp = ArmControl;
         xSemaphoreGiveRecursive(ArmControl.xMutex_control);
 
-        CalculateParallelArm(motor_position_ref,
-                                   ArmControl_tmp.position.x,
-                                   ArmControl_tmp.position.y,
-                                   ArmControl_tmp.position.z);
+        // CalculateParallelArm(motor_position_ref,
+        //                            ArmControl_tmp.position.x,
+        //                            ArmControl_tmp.position.y,
+        //                            ArmControl_tmp.position.z);
         
+        motor_position_ref[0]=100;
+        motor_position_ref[1]=720;
+        motor_position_ref[2]=100;
+
+        // current_angle[0]=motor_position_ref[0];
+        // current_angle[1]=motor_position_ref[1];
+        // current_angle[2]=motor_position_ref[2];
+
         TickType_t StartTick = xTaskGetTickCount();
-        
-        initial_angle[0] = JointComponent_X->AxisData.AxisAngle_inDegree;
-        initial_angle[1] = JointComponent_Y->AxisData.AxisAngle_inDegree;
-        initial_angle[2] = JointComponent_Z->AxisData.AxisAngle_inDegree;
+        // osDelay(2);
+
+        initial_angle[0] = JointComponent_yaw->AxisData.AxisAngle_inDegree;
+        initial_angle[1] = JointComponent_lowerPitch->AxisData.AxisAngle_inDegree;
+        initial_angle[2] = JointComponent_upperPitch->AxisData.AxisAngle_inDegree;
 
         _Bool isArray         = 0;
         float diff[3]        = {0};
         do {
             TickType_t CurrentTick = xTaskGetTickCount();
+            osDelay(2);  //通过在线程中间加delay来拆分任务，其他任务在该delay期间得以执行。防止在该线程单次逗留太久，导致其他线程卡顿。
             float current_time     = (CurrentTick - StartTick)*1.0 / 1000.0;
             VelocityPlanning(initial_angle[0], 1000, 500, motor_position_ref[0], current_time, &(current_angle[0]));
             VelocityPlanning(initial_angle[1], 1000, 500, motor_position_ref[1], current_time, &(current_angle[1]));
@@ -54,7 +64,7 @@ void Arm_VelocityPlanning_Task(void *argument)
             //printf("%d,%d,%f,%f\n", StartTick, CurrentTick, current_time,current_angle[0]);
         } while (!isArray);
 
-        osDelay(2);
+        // osDelay(2);
     }
     
 }

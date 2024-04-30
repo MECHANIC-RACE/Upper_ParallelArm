@@ -13,8 +13,11 @@
 
 #include "Arm_Start.h"
 
-void Core_xy_StateMachine_Start(void);
-void Core_XY_StateMachine_Init();
+// extern double motor_position_ref[4]; //电机目标角度数组
+extern float current_angle[4];
+
+void Arm_VelocityPlanning_TaskStart(void);
+// void Arm_VelocityPlanning_Init();
 void VelocityPlanning(float initialAngle, float maxAngularVelocity, float AngularAcceleration, float targetAngle, float currentTime, volatile float *currentAngle);
 
 #endif // ARM_VELOCITYPLANNING_H

@@ -40,6 +40,7 @@
 #include "Arm_StateMachine.h"
 #include "Arm_Variable.h"
 #include "Arm_Calculate.h"
+#include "Arm_VelocityPlanning.h"
 
 //c语言自带库的额外引用
 #include "string.h"

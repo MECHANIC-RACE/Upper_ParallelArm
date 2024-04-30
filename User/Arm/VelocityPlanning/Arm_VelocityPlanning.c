@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-29 22:29:47
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 00:07:43
+ * @LastEditTime: 2024-04-30 16:10:44
  * @FilePath: \Upper_ParallelArm\User\Arm\VelocityPlanning\Arm_VelocityPlanning.c
  * @Description: 梯形速度规划代码
  * 
@@ -11,12 +11,9 @@
 #include "Arm_VelocityPlanning.h"
 
 ARM_MOVING_STATE Target;
-float initial_angle[3];
-float current_angle[3];
-//待赋值
-// Target.position.x = 0
-// Target.position.y = 0;
-// Target.position.z = 0;
+float initial_angle[3] = {0};
+float current_angle[4] = {0};
+double motor_position_ref[4] = {0};
 
 
 /**
@@ -28,7 +25,7 @@ void Arm_VelocityPlanning_Task(void *argument)
 {
     osDelay(100);
 
-     for (;;) {
+    for (;;) {
         xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
         ARM_MOVING_STATE ArmControl_tmp = ArmControl;
         xSemaphoreGiveRecursive(ArmControl.xMutex_control);
@@ -71,7 +68,7 @@ void Arm_VelocityPlanning_TaskStart(void)
     osThreadId_t Arm_VelocityPlanning_TaskHandle;
     const osThreadAttr_t Arm_VelocityPlanning_Task_attributes = {
         .name       = "Arm_VelocityPlanning_Task",
-        .stack_size = 128 * 10,
+        .stack_size = 1280 * 4,
         .priority   = (osPriority_t) osPriorityHigh,
     };
 
@@ -82,10 +79,10 @@ void Arm_VelocityPlanning_TaskStart(void)
  * @description: 梯形速度规划初始化
  * @return {*}
  */
-void Arm_VelocityPlanning_Init()
-{
-    Target.xMutex_control = xSemaphoreCreateRecursiveMutex();
-}
+// void Arm_VelocityPlanning_Init()
+// {
+//     ;
+// }
 
 
 /**

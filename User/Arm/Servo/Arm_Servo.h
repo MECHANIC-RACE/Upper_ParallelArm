@@ -13,8 +13,6 @@
 #define __ARM_SERVO_H__
 #include"Arm_Start.h"
 
-extern double motor_position_ref[4];
-
 void Arm_Servo_Init();
 void Arm_Servo_TaskStart();
 

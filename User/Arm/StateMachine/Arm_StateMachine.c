@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-29 16:32:51
+ * @LastEditTime: 2024-04-30 00:44:37
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -34,9 +34,9 @@ void Arm_StateMachine_Task(void *argument)
                 break;
             case Run:
                 xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
-                DeadBandOneDimensional((RemoteCtl_RawData_tmp.x - 1024) * 0.001, &(ArmControl.velocity.x), 0.05);
-                DeadBandOneDimensional((RemoteCtl_RawData_tmp.y - 1024) * 0.001, &(ArmControl.velocity.y), 0.05);
-                DeadBandOneDimensional((RemoteCtl_RawData_tmp.z - 1024) * 0.001, &(ArmControl.velocity.z), 0.05);
+                DeadBandOneDimensional(RemoteCtl_RawData_tmp.x , &(ArmControl.position.x), 0.05);
+                DeadBandOneDimensional(RemoteCtl_RawData_tmp.y , &(ArmControl.position.y), 0.05);
+                DeadBandOneDimensional(RemoteCtl_RawData_tmp.z , &(ArmControl.position.z), 0.05);
                 xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
             case Correcting:
@@ -58,7 +58,7 @@ void Arm_StateMachine_TaskStart()
     osThreadId_t Arm_StateMachine_TaskHandle;
     const osThreadAttr_t Arm_StateMachine_Task_attributes = {
     .name = "Arm_StateMachine_Task",
-    .stack_size = 1280 * 4,
+    .stack_size = 128 * 10,
     .priority = (osPriority_t) osPriorityHigh,
     };
     Arm_StateMachine_TaskHandle = osThreadNew(Arm_StateMachine_Task, NULL, &Arm_StateMachine_Task_attributes);  //cmsis v2线程启动似乎只需要这个函数，待测试

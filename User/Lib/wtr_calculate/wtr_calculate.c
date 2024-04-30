@@ -1,7 +1,7 @@
 /*
  * @Author: szf
  * @Date: 2023-02-22 12:04:21
- * @LastEditTime: 2024-04-17 22:45:37
+ * @LastEditTime: 2024-04-30 17:22:05
  * @LastEditors: doge60 3020118317@qq.com
  * @brief 运动学逆解算及PID计算函数
  * @FilePath: \Upper_ParallelArm\User\Lib\wtr_calculate\wtr_calculate.c
@@ -30,6 +30,25 @@ void CalculateFourMecanumWheels(double *motor_speed, double vx, double vy, doubl
     motor_speed[3] = (-vx - vy - vw * rotate_ratio) * wheel_rpm_ratio;
 }
 
+
+/**
+ * @brief: PID控制-位置式PID
+ * @auther: zyt
+ * @param {__IO PID_t} *pid
+ * @return {*}
+ */
+
+void PID_Calc_P(__IO PID_t *pid)
+{
+    pid->cur_error = pid->ref - pid->fdb;
+    pid->integral += pid->cur_error;
+    pid->output = pid->KP * pid->cur_error + pid->KI * pid->integral + pid->KD * (pid->cur_error - pid->error[1]);
+    pid->error[0] = pid->error[1];  //这句已经没有用了
+    pid->error[1] = pid->ref - pid->fdb;
+    /*设定输出上限*/
+    if (pid->output > pid->outputMax) pid->output = pid->outputMax;
+    if (pid->output < -pid->outputMax) pid->output = -pid->outputMax;
+}
 
 /**
  * @brief: PID控制-增量式PID
@@ -80,9 +99,11 @@ void positionServo(float ref, DJI_t *motor)
     motor->posPID.ref = ref;
     motor->posPID.fdb = motor->AxisData.AxisAngle_inDegree;
 
+    P_Calc(&motor->posPID);
+
     motor->speedPID.ref = motor->posPID.output;
     motor->speedPID.fdb = motor->FdbData.rpm;
-    PID_Calc(&(motor->speedPID));
+    PID_Calc_P(&(motor->speedPID));
 }
 
 /**

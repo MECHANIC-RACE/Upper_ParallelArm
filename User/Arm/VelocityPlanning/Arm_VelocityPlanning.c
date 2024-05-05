@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-29 22:29:47
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 20:32:32
+ * @LastEditTime: 2024-05-02 22:01:24
  * @FilePath: \Upper_ParallelArm\User\Arm\VelocityPlanning\Arm_VelocityPlanning.c
  * @Description: 梯形速度规划代码
  * 
@@ -23,28 +23,31 @@ double motor_position_ref[4] = {0};
  */
 void Arm_VelocityPlanning_Task(void *argument)
 {
-    osDelay(100);
+    osDelay(1000); //速度规划启动延时必须和其它
 
     for (;;) {
-        xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
-        ARM_MOVING_STATE ArmControl_tmp = ArmControl;
-        xSemaphoreGiveRecursive(ArmControl.xMutex_control);
-
+        // xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
+        // ARM_MOVING_STATE ArmControl_tmp = ArmControl;
+        // xSemaphoreGiveRecursive(ArmControl.xMutex_control);
+        
+        // // 机械臂解算函数引用
         // CalculateParallelArm(motor_position_ref,
         //                            ArmControl_tmp.position.x,
         //                            ArmControl_tmp.position.y,
         //                            ArmControl_tmp.position.z);
         
-        motor_position_ref[0]=100;
-        motor_position_ref[1]=720;
-        motor_position_ref[2]=100;
+        // 在这里测试机械臂解算函数
+        // CalculateParallelArm(motor_position_ref,
+        //                            0,
+        //                            800,
+        //                            0);
 
-        // current_angle[0]=motor_position_ref[0];
-        // current_angle[1]=motor_position_ref[1];
-        // current_angle[2]=motor_position_ref[2];
+        // 在这里直接给电机角度以调试
+        motor_position_ref[0]=0;
+        motor_position_ref[1]=0;
+        motor_position_ref[2]=720;
 
         TickType_t StartTick = xTaskGetTickCount();
-        // osDelay(2);
 
         initial_angle[0] = JointComponent_yaw->AxisData.AxisAngle_inDegree;
         initial_angle[1] = JointComponent_lowerPitch->AxisData.AxisAngle_inDegree;
@@ -54,17 +57,18 @@ void Arm_VelocityPlanning_Task(void *argument)
         float diff[3]        = {0};
         do {
             TickType_t CurrentTick = xTaskGetTickCount();
-            osDelay(2);  //通过在线程中间加delay来拆分任务，其他任务在该delay期间得以执行。防止在该线程单次逗留太久，导致其他线程卡顿。
+            // osDelay(2);  //通过在线程中间加delay来拆分任务，其他任务在该delay期间得以执行。防止在该线程单次逗留太久，导致其他线程卡顿。
             float current_time     = (CurrentTick - StartTick)*1.0 / 1000.0;
-            VelocityPlanning(initial_angle[0], 1000, 500, motor_position_ref[0], current_time, &(current_angle[0]));
-            VelocityPlanning(initial_angle[1], 1000, 500, motor_position_ref[1], current_time, &(current_angle[1]));
-            VelocityPlanning(initial_angle[2], 1000, 500, motor_position_ref[2], current_time, &(current_angle[2]));
+            VelocityPlanning(initial_angle[0], 1000, 800, motor_position_ref[0], current_time, &(current_angle[0])); //如果希望电机转快点，就把第三个角加速度改大
+            VelocityPlanning(initial_angle[1], 1000, 800, motor_position_ref[1], current_time, &(current_angle[1]));
+            VelocityPlanning(initial_angle[2], 1000, 800, motor_position_ref[2], current_time, &(current_angle[2]));
+            
+            osDelay(2);  //通过在线程中间加delay来拆分任务，其他任务在该delay期间得以执行。防止在该线程单次逗留太久，导致其他线程卡顿。
+            
             for (uint16_t i = 0; i < 3; i++) { diff[i] = fabs(motor_position_ref[i] - current_angle[i]); }
             if ((diff[0] < 0.1) && (diff[1] < 0.1) && (diff[2] < 0.1)) { isArray = 1; }
             //printf("%d,%d,%f,%f\n", StartTick, CurrentTick, current_time,current_angle[0]);
         } while (!isArray);
-
-        // osDelay(2);
     }
     
 }

@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-17 22:15:23
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 19:39:25
+ * @LastEditTime: 2024-04-30 23:29:57
  * @FilePath: \Upper_ParallelArm\User\Arm\Servo\Arm_Servo.c
  * @Description: 机械臂伺服
  * 
@@ -31,14 +31,14 @@ void Arm_Servo_Init()
     DJI_Init();
     for (int i = 0; i < 8; i++) {
         hDJI[i].speedPID.KP        = 2.0;
-        hDJI[i].speedPID.KI        = 0.0;
+        hDJI[i].speedPID.KI        = 0.00;
         hDJI[i].speedPID.KD        = 0.0;
         hDJI[i].speedPID.outputMax = 8000;
 
         hDJI[i].posPID.KP        = 80.0f;
         hDJI[i].posPID.KI        = 0.0f;
         hDJI[i].posPID.KD        = 0.0f;
-        hDJI[i].posPID.outputMax = 5000;
+        hDJI[i].posPID.outputMax = 4000;
     }
 }
 

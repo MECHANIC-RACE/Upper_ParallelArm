@@ -14,9 +14,9 @@
 
 #include "Arm_Start.h"
 typedef enum {
-    Stop       = 1, // 停止
-    Run        = 3, // 启动
-    Correcting = 2, // 机械臂校准
+    Store       = 1, // 存球
+    Catch        = 3, // 取球
+    Wait = 2, // 机械臂等待
 } ARM_STATE;    // 机械臂状态
 
 typedef __IO struct

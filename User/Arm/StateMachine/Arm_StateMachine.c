@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-16 19:35:37
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 00:44:37
+ * @LastEditTime: 2024-05-02 18:41:11
  * @FilePath: \Upper_ParallelArm\User\Arm\StateMachine\Arm_StateMachine.c
  * @Description: 机械臂状态机
  * 
@@ -22,27 +22,32 @@ void Arm_StateMachine_Task(void *argument)
     osDelay(1000);
     for (;;) {
         vPortEnterCritical();  //进入临界段（大概是因为遥控通信过程是不可打断的，所以将其放在一个临界段里）
-        Remote_t RemoteCtl_RawData_tmp = RemoteCtl_RawData;  //
+        Remote_t RemoteCtl_RawData_tmp = RemoteCtl_RawData;
         vPortExitCritical();  //退出临界段
         switch (RemoteCtl_RawData_tmp.choice) {
-            case Stop:
+            case Store:
                 xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
-                ArmControl.velocity.x = 0;
-                ArmControl.velocity.y = 0;
-                ArmControl.velocity.z = 0;
+                ArmControl.position.x = 0;
+                ArmControl.position.y = -240;
+                ArmControl.position.z = 50;
                 xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
-            case Run:
+            case Catch:
                 xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
                 DeadBandOneDimensional(RemoteCtl_RawData_tmp.x , &(ArmControl.position.x), 0.05);
                 DeadBandOneDimensional(RemoteCtl_RawData_tmp.y , &(ArmControl.position.y), 0.05);
                 DeadBandOneDimensional(RemoteCtl_RawData_tmp.z , &(ArmControl.position.z), 0.05);
                 xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
-            case Correcting:
-
+            case Wait:
+                xSemaphoreTakeRecursive(ArmControl.xMutex_control, portMAX_DELAY);
+                ArmControl.position.x = 0;
+                ArmControl.position.y = 200;
+                ArmControl.position.z = 0;
+                xSemaphoreGiveRecursive(ArmControl.xMutex_control);
                 break;
             default:
+                
                 break;
         }
         vTaskDelay(2);

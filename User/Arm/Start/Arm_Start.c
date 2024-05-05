@@ -2,7 +2,7 @@
  * @Author: doge60 3020118317@qq.com
  * @Date: 2024-04-15 23:10:34
  * @LastEditors: doge60 3020118317@qq.com
- * @LastEditTime: 2024-04-30 20:38:24
+ * @LastEditTime: 2024-05-02 22:14:55
  * @FilePath: \Upper_ParallelArm\User\Arm\Start\Arm_Start.c
  * @Description: 机械臂启动文件
  *
@@ -34,7 +34,8 @@ void StartDefaultTask(void *argument)
         // printf("HelloWorld\r\n");  //调试串口重定向用
         // HAL_UART_Transmit(&huart_RemoteCtl, ReceiveData_tmp, 4, 0xFFFF);  //调试串口数据收发用
         // printf("%f,%f,%f,%d\n" , RemoteCtl_RawData.x,RemoteCtl_RawData.y,RemoteCtl_RawData.z,RemoteCtl_RawData.choice);  //调试串口浮点数据收发用
-        printf("%f,%f,%f,%f,%f\n", JointComponent_lowerPitch->AxisData.AxisVelocity * 50, JointComponent_lowerPitch->AxisData.AxisAngle_inDegree, 
-                JointComponent_lowerPitch->speedPID.ref, JointComponent_lowerPitch->speedPID.output, current_angle[1]); //调试pid+速度规划用
+        // printf("%f,%f,%f,%f,%f\n", JointComponent_yaw->AxisData.AxisVelocity * 60, JointComponent_yaw->AxisData.AxisAngle_inDegree * 10, JointComponent_yaw->speedPID.ref, JointComponent_yaw->speedPID.output, current_angle[0] * 10); //调试pid+速度规划用
+        printf("%f,%f,%f,%f,%f\n", JointComponent_lowerPitch->AxisData.AxisVelocity * 60, JointComponent_lowerPitch->AxisData.AxisAngle_inDegree * 15, JointComponent_lowerPitch->speedPID.ref, JointComponent_lowerPitch->speedPID.output, current_angle[1] * 15); //调试pid+速度规划用
+        // printf("%f,%f,%f,%f,%f\n", JointComponent_upperPitch->AxisData.AxisVelocity * 60, JointComponent_upperPitch->AxisData.AxisAngle_inDegree * 15, JointComponent_upperPitch->speedPID.ref, JointComponent_upperPitch->speedPID.output, current_angle[2] * 15); //调试pid+速度规划用
     }
 }
